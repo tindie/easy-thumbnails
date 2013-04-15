@@ -4,6 +4,8 @@ try:
 except ImportError:
     from StringIO import StringIO
 
+import logging
+
 try:
     from PIL import Image
 except ImportError:
@@ -11,6 +13,8 @@ except ImportError:
 
 from easy_thumbnails import utils
 from easy_thumbnails.conf import settings
+
+log = logging.getLogger(__name__)
 
 
 def _use_default_options(options):
@@ -81,6 +85,7 @@ def generate_source_image(source_file, processor_options, generators=None):
         try:
             source.open()
         except Exception:
+            log.exception('Unable to open source file')
             source = None
             was_closed = False
         for generator in generators:

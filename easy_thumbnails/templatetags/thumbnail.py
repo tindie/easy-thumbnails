@@ -1,4 +1,5 @@
 import re
+import logging
 
 from django.template import (
     Library, Node, VariableDoesNotExist, TemplateSyntaxError)
@@ -7,6 +8,8 @@ from django.utils.html import escape
 from easy_thumbnails import utils
 from easy_thumbnails.conf import settings
 from easy_thumbnails.files import get_thumbnailer
+
+log = logging.getLogger(__name__)
 
 register = Library()
 
@@ -258,6 +261,7 @@ def thumbnail_url(source, alias):
     try:
         thumb = get_thumbnailer(source)[alias]
     except Exception:
+        log.exception('Caught exception in thumbnail_url')
         return ''
     return thumb.url
 

@@ -1,3 +1,4 @@
+import logging
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -9,6 +10,8 @@ except ImportError:
     import Image
 
 from easy_thumbnails import utils
+
+log = logging.getLogger(__name__)
 
 
 def pil_image(source, exif_orientation=True, **options):
@@ -34,6 +37,7 @@ def pil_image(source, exif_orientation=True, **options):
         # contents.
         image.load()
     except Exception:
+        log.exception('Caught exception in thumbnail_url')
         return
 
     if exif_orientation:
